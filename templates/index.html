@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Lista de Tarefas</title>
+    <style>
+        body { font-family: Arial, sans-serif; max-width: 600px; margin: 40px auto; }
+        h1 { color: #333; }
+        table { width: 100%; border-collapse: collapse; margin-top: 20px; }
+        th, td { text-align: left; padding: 8px; border-bottom: 1px solid #ddd; }
+        a { text-decoration: none; color: #1a73e8; margin-right: 10px; }
+        .btn-nova { display: inline-block; margin-bottom: 15px; background: #1a73e8; color: white; padding: 8px 14px; border-radius: 4px; }
+    </style>
+</head>
+<body>
+    <h1>Minhas Tarefas</h1>
+    <a class="btn-nova" href="{{ url_for('nova_tarefa') }}">+ Nova Tarefa</a>
+    <table>
+        <tr>
+            <th>Título</th>
+            <th>Descrição</th>
+            <th>Concluída?</th>
+            <th>Ações</th>
+        </tr>
+        {% for tarefa in tarefas %}
+        <tr>
+            <td>{{ tarefa.titulo }}</td>
+            <td>{{ tarefa.descricao }}</td>
+            <td>{{ "Sim" if tarefa.concluida else "Não" }}</td>
+            <td>
+                <a href="{{ url_for('editar_tarefa', id=tarefa.id) }}">Editar</a>
+                <a href="{{ url_for('excluir_tarefa', id=tarefa.id) }}" onclick="return confirm('Excluir esta tarefa?')">Excluir</a>
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+</html>
