@@ -1,15 +1,31 @@
 import os
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for, session
 from flask_sqlalchemy import SQLAlchemy
+from authlib.integrations.flask_client import OAuth
 
 app = Flask(__name__)
+app.secret_key = os.environ.get("SECRET_KEY", "chave-temporaria")
 
+oauth = OAuth(app)
+
+github = oauth.register(
+    name="github",
+    client_id=os.environ.get("GITHUB_CLIENT_ID"),
+    client_secret=os.environ.get("GITHUB_CLIENT_SECRET"),
+    access_token_url="https://github.com/login/oauth/access_token",
+    authorize_url="https://github.com/login/oauth/authorize",
+    api_base_url="https://api.github.com/",
+    client_kwargs={"scope": "user:email"},
+)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     'DATABASE_URL', 'sqlite:///local.db'
 )
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
+from authlib.integrations.flask_client
+
+import OAuth
 
 
 class Tarefa(db.Model):
