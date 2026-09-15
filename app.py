@@ -23,9 +23,9 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
-from authlib.integrations.flask_client
+from authlib.integrations.flask_client import OAuth
 
-import OAuth
+
 
 
 class Tarefa(db.Model):
