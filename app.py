@@ -76,6 +76,31 @@ def excluir_tarefa(id):
     db.session.commit()
     return redirect(url_for('index'))
 
+@app.route('/login')
+def login():
+    redirect_uri = url_for('authorize', _external=True)
+    return github.authorize_redirect(redirect_uri)
 
+
+@app.route('/authorize')
+def authorize():
+    token = github.authorize_access_token()
+    resp = github.get('user', token=token)
+    user = resp.json()
+
+    session['user'] = {
+        'login': user.get('login'),
+        'name': user.get('name'),
+        'avatar_url': user.get('avatar_url')
+    }
+
+    return redirect(url_for('index'))
+
+
+@app.route('/logout')
+def logout():
+    session.pop('user', None)
+    return redirect(url_for('index'))
+    
 if __name__ == '__main__':
     app.run(debug=True)
